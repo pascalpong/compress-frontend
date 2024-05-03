@@ -22,7 +22,7 @@ const Footer = () => {
               borderRight={1}
               borderColor={'secondary.main'}
             >
-
+              
             </Box>
           </Stack>
           <Box>
