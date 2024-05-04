@@ -1,7 +1,22 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Container, Typography, Box } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useFileUploadMutation, useGetUploadQuery } from "@/api/uploadService";
+import PDFViewer from '../../components/PDFViewer';
+
+
+
 
 const Upload = () => {
+
+    const [droppedFile, setDroppedFile] = useState<File | null>(null);
+
+    const getUpload = useGetUploadQuery({});
+    useEffect(() => {
+    },[getUpload])
+
+    const [ fileUpload ] = useFileUploadMutation();
+
     const [isDragging, setIsDragging] = useState(false);
 
     const handleDragEnter = (event: any) => {
@@ -13,12 +28,19 @@ const Upload = () => {
         setIsDragging(false);
     };
 
-    const handleDrop = (event: any) => {
+    const handleDrop = async (event: any) => {
         event.preventDefault();
-        setIsDragging(false);
-        const file = event.dataTransfer.files[0];
-        // Process the dropped file (e.g., upload it)
-        console.log("Dropped file:", file);
+        setIsDragging(false);       
+    
+        const file = event.dataTransfer.files[0]; 
+        if (file.type !== 'application/pdf') {
+            // Display an error message or handle the case where the dropped file is not a PDF
+            console.error('Only PDF files are allowed.');
+            return;
+        }
+    
+        await fileUpload(file);
+        setDroppedFile(file);
     };
 
     const handleDragOver = (event: any) => {
@@ -59,6 +81,7 @@ const Upload = () => {
                     </Typography>
                 </label>
             </Box>
+            <PDFViewer file={droppedFile} />
         </Container>
     );
 };

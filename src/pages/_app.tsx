@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMemo, useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Header from '@/layouts/Header';
@@ -5,8 +6,9 @@ import Footer from '@/layouts/Footer';
 import ColorModeContext from '@/ColorModeContext';
 import { amber, deepOrange, grey } from '@mui/material/colors';
 import Head from 'next/head';
-import LowerHeader from '@/layouts/Header/LowerHeader';
 import { CssBaseline } from '@mui/material';
+import { Provider } from 'react-redux';
+import { store } from '@/app/store';
 
 function MyApp({ Component, pageProps }: any) {
   const [mode, setMode] = useState<'light' | 'dark'>('light');
@@ -32,7 +34,7 @@ function MyApp({ Component, pageProps }: any) {
               divider: amber[200],
               text: {
                 primary: grey[900],
-                secondary: grey[800],
+                secondary: '#585858',
               },
               button: {
                 primary: grey[900],
@@ -67,24 +69,30 @@ function MyApp({ Component, pageProps }: any) {
           fontSize: '28px', // Customize the font size for heading level 2
           fontWeight: 700,
         },
+        body2: {
+          fontSize: '12px',
+          fontWeight: 400,
+        }
       },
     }),
     [mode],
   );
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <Head>
-          <link href="https://fonts.googleapis.com/css2?family=Istok+Web:wght@400;700&display=swap" rel="stylesheet" />
-        </Head>
-        <CssBaseline />
-        <Header />
-        <LowerHeader/>
-        <Component {...pageProps} />
-        <Footer />
-      </ThemeProvider>
-    </ColorModeContext.Provider>
+    
+    <Provider store={store}>
+      <ColorModeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
+          <Head>
+            <link href="https://fonts.googleapis.com/css2?family=Istok+Web:wght@400;700&display=swap" rel="stylesheet" />
+          </Head>
+          <CssBaseline />
+          <Header /> 
+          <Component {...pageProps}/>
+          <Footer />
+        </ThemeProvider>
+      </ColorModeContext.Provider>
+    </Provider>
   );
 }
 
