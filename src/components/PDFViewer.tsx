@@ -1,5 +1,6 @@
 import React from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
+import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -12,7 +13,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ file }) => {
     <>
       {file && (
         <Document file={file}>
-          <Page pageNumber={1} />
+          <Page pageNumber={1} renderTextLayer={false} renderAnnotationLayer={false}/>
         </Document>
       )}
     </>

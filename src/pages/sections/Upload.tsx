@@ -1,89 +1,52 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Container, Typography, Box } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useFileUploadMutation, useGetUploadQuery } from "@/api/uploadService";
-import PDFViewer from '../../components/PDFViewer';
-
-
-
+/* eslint-disable @typescript-eslint/no-explicit-any */ 
+import React, { useEffect, useState } from 'react';
+import { Container, Box } from '@mui/material';
+import UploadBox from '@/components/UploadBox';
+import PDFViewer from '@/components/PDFViewer';
+import CompressionSettings from '@/components/CompressionSettings';
 
 const Upload = () => {
 
-    const [droppedFile, setDroppedFile] = useState<File | null>(null);
+  const [droppedFile, setDroppedFile] = useState<File | null>(null);
+  const [ dataReturned, setDataReturned ] = useState()
 
-    const getUpload = useGetUploadQuery({});
-    useEffect(() => {
-    },[getUpload])
-
-    const [ fileUpload ] = useFileUploadMutation();
-
-    const [isDragging, setIsDragging] = useState(false);
-
-    const handleDragEnter = (event: any) => {
-        event.preventDefault();
-        setIsDragging(true);
-    };
-
-    const handleDragLeave = () => {
-        setIsDragging(false);
-    };
-
-    const handleDrop = async (event: any) => {
-        event.preventDefault();
-        setIsDragging(false);       
+  const [compressionSettings, setCompressionSettings] = useState(null);
+  const handleCompressionSettingsSubmit = (settings: any) => {
+    setCompressionSettings(settings);
     
-        const file = event.dataTransfer.files[0]; 
-        if (file.type !== 'application/pdf') {
-            // Display an error message or handle the case where the dropped file is not a PDF
-            console.error('Only PDF files are allowed.');
-            return;
-        }
-    
-        await fileUpload(file);
-        setDroppedFile(file);
-    };
+  };
 
-    const handleDragOver = (event: any) => {
-        event.preventDefault();
-    };
+  useEffect(() => {
+    if(compressionSettings) {
+      console.log(compressionSettings)
+    }
+  },[compressionSettings])
 
-    const handleFileChange = (event: any) => {
-        const file = event.target.files[0];
-        // Process the selected file (e.g., upload it)
-        console.log("Selected file:", file);
-    };
+  useEffect(() => {
+    if(dataReturned) { 
+      
+    }
+  },[dataReturned])
 
-    return (
-        <Container>
-            <Box
-                border={1}
-                borderRadius={2}
-                borderColor={isDragging ? "primary.main" : "text.secondary"}
-                p={3}
-                textAlign="center"
-                onDragEnter={handleDragEnter}
-                onDragLeave={handleDragLeave}
-                onDrop={handleDrop}
-                onDragOver={handleDragOver}
-                sx={{ cursor: "pointer" }}
-            >
-                <input
-                    type="file"
-                    accept="application/pdf"
-                    onChange={handleFileChange}
-                    style={{ display: "none" }}
-                    id="fileInput"
-                />
-                <label htmlFor="fileInput">
-                    <Typography variant="h5">Drag and Drop PDF File Here</Typography>
-                    <Typography variant="body1" color="text.secondary" mt={2}>
-                        Or click to browse your files
-                    </Typography>
-                </label>
-            </Box>
+  return (
+    <Container>
+      <Box
+        border={1}
+        borderRadius={2}
+        p={3}
+        textAlign="center"
+      >
+        {droppedFile ? (
+          <>
             <PDFViewer file={droppedFile} />
-        </Container>
-    );
+            <CompressionSettings onSubmit={handleCompressionSettingsSubmit} />
+          </>
+        ) : (
+          <UploadBox setDroppedFile={setDroppedFile} setDataReturned={setDataReturned} />
+        )}
+      </Box>
+    </Container>
+  );
 };
 
 export default Upload;

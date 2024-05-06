@@ -12,18 +12,26 @@ export const UploadService = createApi({
           method: 'GET'
         })
       }),
-      fileUpload: builder.mutation<any, any>({
-        query: (file: File) => {
+      fileUpload: builder.mutation<any, { data: any, file: File }>({
+        query: ({ data, file }: any) => {
           const formData = new FormData();
           formData.append('file', file);
+          formData.append('data', JSON.stringify(data));
           return {
             url: '/upload',
             method: 'POST',
             body: formData
           };
-        }, 
+        }
+      }),
+      fileCompress: builder.mutation<any, any>({
+        query: (body) => ({
+          url: '/upload/compress',
+          method: 'PATCH',
+          body
+        })
       })
     })
 });
   
-export const { useGetUploadQuery, useFileUploadMutation } = UploadService;
+export const { useGetUploadQuery, useFileUploadMutation, useFileCompressMutation } = UploadService;
