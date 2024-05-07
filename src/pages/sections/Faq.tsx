@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, Container, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Container, Typography } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 
@@ -17,6 +17,7 @@ const Faq = () => {
 
     return (
         <Container>
+            <Box paddingY={4}>
             {details.map((detail, index) => (
                 <Accordion
                     key={index}
@@ -45,6 +46,7 @@ const Faq = () => {
                     </AccordionDetails>
                 </Accordion>
             ))}
+            </Box>
         </Container>
     )
 }

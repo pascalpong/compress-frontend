@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */ 
 import React, { useEffect, useState } from 'react';
-import { Container, Box, Button } from '@mui/material';
+import { Container, Box, Button, Stack, Typography } from '@mui/material';
 import UploadBox from '@/components/UploadBox';
 import PDFViewer from '@/components/PDFViewer';
 import CompressionSettings from '@/components/CompressionSettings';
@@ -47,8 +47,12 @@ const Upload = () => {
 
   return (
     <Container>
+      <Box paddingTop={4}>
+        <Typography variant='h1' >Compress PDF</Typography>
+        <Typography variant='body2' color={'text.secondary'}>PDF compressor to reduce the size of PDF files quickly and easily</Typography>
+      </Box>
       <Box
-        margin={4}
+        marginY={4}
         border={'dashed'}
         borderRadius={2}
         borderColor={'primary.main'}
@@ -63,15 +67,15 @@ const Upload = () => {
         }}
       >
         { downloadUrl !== null ? ( 
-          <Button variant="contained" color="primary" href={downloadUrl} download>
+          <Button LinkComponent={'a'} variant="contained" color="primary" target='_blank' href={downloadUrl} download>
             Download file
           </Button>
         ) : (
           droppedFile ? (
-            <> 
+            <Stack width={'100%'} direction={'row'} justifyContent={'space-evenly'} alignItems={'center'}> 
               <PDFViewer file={droppedFile} /> 
               <CompressionSettings onSubmit={handleCompressionSettingsSubmit} />
-            </>
+            </Stack>
           ) : (
             <UploadBox setDroppedFile={setDroppedFile} setDataReturned={setDataReturned} />
           )

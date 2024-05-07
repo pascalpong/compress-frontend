@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Typography, Box, IconButton, Stack, Button, Container } from '@mui/material';
+import { AppBar, Typography, IconButton, Stack, Button, Container } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
@@ -44,7 +44,7 @@ const Header = () => {
             <IconButton onClick={toggleDarkMode} color="inherit">
               {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <DarkModeIcon />}
             </IconButton>
-            <Button variant="contained" color='primary'>Contained</Button>
+            <Button variant="contained" color='primary'>All PDF Tools</Button>
           </Stack>
         </Stack>
       </Container>

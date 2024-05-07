@@ -18,32 +18,34 @@ const AllTools = () => {
 
     return (
         <Container>
-            <Stack 
-            direction="row"
-            sx={{ 
-                top: 'auto', 
-                bottom: 20,
-            }} 
-            justifyContent={'space-between'}
-            >
-            {Array.from({ length: columns }).map((_, index) => (
-            <Box
-                paddingX={2}
-                width={10}
-                key={index}
-                borderRight={1}
-                borderColor={'#C1C1C1'}
-                flexGrow={1}
-                sx={{ display: 'flex', flexDirection: 'column' }}
-            >
-                {services.slice(index * perColumn, (index + 1) * perColumn).map((service, idx) => (
-                <Typography key={idx} sx={{ marginBottom: idx === perColumn - 1 ? 0 : 1 }}>
-                    {service}
-                </Typography>
+            <Box borderTop={'solid 2px'} borderColor={'primary.main'} padding={2}>
+                <Box marginBottom={2}>
+                    <Typography variant="h6" fontWeight={700}>All Tolls</Typography>
+                </Box>
+                <Stack 
+                    direction="row"
+                    marginBottom={10} 
+                    justifyContent={'space-between'}
+                >
+                {Array.from({ length: columns }).map((_, index) => (
+                <Box
+                    paddingLeft={2}
+                    width={10}
+                    key={index}
+                    borderLeft={1}
+                    borderColor={'#C1C1C1'}
+                    flexGrow={1}
+                    sx={{ display: 'flex', flexDirection: 'column' }}
+                >
+                    {services.slice(index * perColumn, (index + 1) * perColumn).map((service, idx) => (
+                    <Typography variant="body2" key={idx} sx={{ marginBottom: idx === perColumn - 1 ? 0 : 1 }}>
+                        {service}
+                    </Typography>
+                    ))}
+                </Box>
                 ))}
+                </Stack>
             </Box>
-            ))}
-            </Stack>
         </Container>
     )
 }

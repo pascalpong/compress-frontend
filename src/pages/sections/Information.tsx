@@ -15,38 +15,38 @@ const Information = () => {
         {
             title: 'How to compress PDF files',
             description: 'Select your PDF files which you would like to compress or drop them into the file box and start the compression. A few seconds later you can download your compressed PDF files.',
-            logo: <ZoomInMapIcon />
+            logo: <ZoomInMapIcon color="primary"/>
         },
         {
             title: 'Adjustable quality',
             description: 'You can adjust the compression quality so that you can tune the compression algorithm in order to get a perfect result. PDF files with images can be compressed better than PDF files with text only.',
-            logo: <TuneIcon />
+            logo: <TuneIcon color="primary"/>
         },
         {
             title: 'Easy to use',
             description: `PDF24 makes it as easy and fast as possible for you to compress your files. You don't need to install any software, you only have to select your files and start the compression.`,
-            logo: <StarOutlineRoundedIcon />
+            logo: <StarOutlineRoundedIcon color="primary"/>
         },
         {
             title: 'Runs on your system',
             description: 'The compression tool does not need any special system in order to compress your PDF files. The app is browser based and works under all operating systems.',
-            logo: <DesktopWindowsRoundedIcon />
+            logo: <DesktopWindowsRoundedIcon color="primary"/>
         },
         {
             title: 'No installation required',
             description: 'You do not need to download and install any software. PDF files are compressed in the cloud on our servers. The app does not consume your system resources.',
-            logo: <CloudQueueRoundedIcon />
+            logo: <CloudQueueRoundedIcon color="primary"/>
         },
         {
             title: 'Secure online compression',
             description: 'The compression tool does not keep your files longer than necessary on our server. Your files and results will be deleted from our server after a short period of time.',
-            logo: <LockOutlinedIcon />
+            logo: <LockOutlinedIcon color="primary"/>
         },
     ]
 
 
     return (
-        <Box sx={{ bgcolor:'secondary.main' }}>
+        <Box sx={{ bgcolor:'secondary.main' }} padding={4}>
             <Container>
                 <Stack 
                     spacing={{ xs: 1, sm: 2 }} 
@@ -54,7 +54,7 @@ const Information = () => {
                     alignItems={'center'}
                 >
                     <Box>
-                        <Typography variant="h2" textAlign={'center'}>Information</Typography>
+                        <Typography variant="h2" textAlign={'center'}  color={'text.secondary'}>Information</Typography>
                         <Stack
                             direction="row"
                             spacing={{ xs: 1, sm: 2 }}
@@ -75,7 +75,7 @@ const Information = () => {
                                 <Typography 
                                     p={1} 
                                     variant="body2"
-                                    color={'text.primary'}
+                                    color={'text.secondary'}
                                 >
                                     {item}
                                 </Typography>
@@ -98,17 +98,17 @@ const Information = () => {
                                 my={4}
                                 gap={4}
                                 p={2}
-                                sx={{ border: '2px solid grey' }}
+                                sx={{ border: '1px solid', borderColor: 'secondary.dark', borderRadius: 2 }}
                             >
                                 <Stack
-                                    height={'100%'}
+                                    height={'50%'}
                                     direction={'row'}
                                     justifyContent={'space-between'}
                                 >
-                                    <Typography variant="body2" >{detail.title}</Typography>
+                                    <Typography variant="h6" fontWeight={700} color={'text.secondary'}>{detail.title}</Typography>
                                     <>{detail.logo}</>
                                 </Stack>
-                                <Typography variant="body2" >{detail.description}</Typography>
+                                <Typography variant="body2" color={'text.secondary'}>{detail.description}</Typography>
                             </Box> 
                         </Grid>
                     ))}

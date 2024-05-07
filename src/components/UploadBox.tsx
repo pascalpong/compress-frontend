@@ -70,7 +70,7 @@ const UploadBox: React.FC<UploadBoxProps> = ({ setDroppedFile, setDataReturned }
             id="fileInput"
           />
           <label htmlFor="fileInput">
-            <Typography variant="h5">Drag and Drop PDF File Here</Typography>
+            <Typography variant="h5" color={'text.secondary'}>Drag and Drop PDF File Here</Typography>
             <Typography variant="body1" color="text.secondary" mt={2}>
                 Or click to browse your files
             </Typography>

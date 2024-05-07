@@ -59,7 +59,7 @@ const LowerHeader = () => {
                         <Typography 
                             p={1} 
                             variant="body2"
-                            color={'text.secondary'}
+                            color={'white'}
                         >
                             {item}
                         </Typography>
