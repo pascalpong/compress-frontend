@@ -13,7 +13,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ file }) => {
     <>
       {file && (
         <Document file={file}>
-          <Page pageNumber={1} renderTextLayer={false} renderAnnotationLayer={false}/>
+          <Page height={250} pageNumber={1} renderTextLayer={false} renderAnnotationLayer={false}/>
         </Document>
       )}
     </>

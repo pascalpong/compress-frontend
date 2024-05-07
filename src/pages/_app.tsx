@@ -27,6 +27,7 @@ function MyApp({ Component, pageProps }: any) {
           ? {
               primary: {
                 main: '#327FDE',
+                light: '#EFF6FF'
               },
               secondary: {
                 main: '#EFF6FF'

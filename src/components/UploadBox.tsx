@@ -11,10 +11,8 @@ const UploadBox: React.FC<UploadBoxProps> = ({ setDroppedFile, setDataReturned }
 
   const [fileUpload] = useFileUploadMutation();
 
-  const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
+  const manageFile = async (file: any) => {
 
-    const file = event.dataTransfer.files[0];
     if (file.type !== 'application/pdf') {
       console.error('Only PDF files are allowed.');
       return;
@@ -34,12 +32,18 @@ const UploadBox: React.FC<UploadBoxProps> = ({ setDroppedFile, setDataReturned }
     }];
 
     try {
-        const details = await fileUpload({data, file}) as any;
-        setDataReturned(details.data.data)
+        const details = await fileUpload({data, file}) as any; 
+        setDataReturned({data: details.data.data, jobId:details.data.jobId })
         setDroppedFile(file);
     } catch (error) {
         console.log(error)
     } 
+  }
+
+  const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    const file = event.dataTransfer.files[0];
+    manageFile(file);
   };
 
   const handleDragOver = (event: any) => {
@@ -48,7 +52,7 @@ const UploadBox: React.FC<UploadBoxProps> = ({ setDroppedFile, setDataReturned }
 
   const handleFileChange = (event: any) => {
       const file = event.target.files[0];
-      console.log("Selected file:", file);
+      manageFile(file);
   };
 
     return (

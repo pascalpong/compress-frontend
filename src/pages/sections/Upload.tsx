@@ -1,48 +1,80 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */ 
 import React, { useEffect, useState } from 'react';
-import { Container, Box } from '@mui/material';
+import { Container, Box, Button } from '@mui/material';
 import UploadBox from '@/components/UploadBox';
 import PDFViewer from '@/components/PDFViewer';
 import CompressionSettings from '@/components/CompressionSettings';
+import { useFileCompressMutation } from '@/api/uploadService';
 
 const Upload = () => {
 
   const [droppedFile, setDroppedFile] = useState<File | null>(null);
-  const [ dataReturned, setDataReturned ] = useState()
+  const [ dataReturned, setDataReturned ] = useState({
+    data: {},
+    jobId: null
+  })
+  const [ compressFile ] = useFileCompressMutation();
+  const [ downloadUrl, setDownloadUrl ] = useState(null)
 
-  const [compressionSettings, setCompressionSettings] = useState(null);
-  const handleCompressionSettingsSubmit = (settings: any) => {
+  const [compressionSettings, setCompressionSettings] = useState({});
+  const handleCompressionSettingsSubmit = async (settings: any) => {
     setCompressionSettings(settings);
-    
   };
-
+  
   useEffect(() => {
-    if(compressionSettings) {
-      console.log(compressionSettings)
-    }
-  },[compressionSettings])
+    const compressFileAsync = async () => {
+      if (Object.keys(compressionSettings).length !== 0) {
+        console.log(compressionSettings);
+        const data = {
+          jobId: dataReturned.jobId,
+          ...compressionSettings
+        };
+        try {
+          const result = await compressFile(data) as any;
+          if( result.downloadUrl !== null ) { 
+            setDownloadUrl(result.data.data.downloadUrl) 
+          }
+          // Handle result if needed
+        } catch (error) {
+          console.error('Error compressing file:', error);
+        }
+      }
+    };
+  
+    compressFileAsync();
+  }, [compressionSettings]);
 
-  useEffect(() => {
-    if(dataReturned) { 
-      
-    }
-  },[dataReturned])
 
   return (
     <Container>
       <Box
-        border={1}
+        margin={4}
+        border={'dashed'}
         borderRadius={2}
+        borderColor={'primary.main'}
+        height={'300px'}
         p={3}
+        display={'flex'}
+        justifyContent={'center'}
+        alignItems={'center'}
         textAlign="center"
+        sx={{
+          backgroundColor:'primary.light'
+        }}
       >
-        {droppedFile ? (
-          <>
-            <PDFViewer file={droppedFile} />
-            <CompressionSettings onSubmit={handleCompressionSettingsSubmit} />
-          </>
+        { downloadUrl !== null ? ( 
+          <Button variant="contained" color="primary" href={downloadUrl} download>
+            Download file
+          </Button>
         ) : (
-          <UploadBox setDroppedFile={setDroppedFile} setDataReturned={setDataReturned} />
+          droppedFile ? (
+            <> 
+              <PDFViewer file={droppedFile} /> 
+              <CompressionSettings onSubmit={handleCompressionSettingsSubmit} />
+            </>
+          ) : (
+            <UploadBox setDroppedFile={setDroppedFile} setDataReturned={setDataReturned} />
+          )
         )}
       </Box>
     </Container>
