@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */ 
 import React, { useEffect, useState } from 'react';
-import { Container, Box, Button, Stack, Typography } from '@mui/material';
+import { Container, Box, Button, Stack, Typography, CircularProgress } from '@mui/material';
 import UploadBox from '@/components/UploadBox';
 import PDFViewer from '@/components/PDFViewer';
 import CompressionSettings from '@/components/CompressionSettings';
@@ -15,6 +15,7 @@ const Upload = () => {
   })
   const [ compressFile ] = useFileCompressMutation();
   const [ downloadUrl, setDownloadUrl ] = useState(null)
+  const [ loading, setLoading ] = useState(false)
 
   const [compressionSettings, setCompressionSettings] = useState({});
   const handleCompressionSettingsSubmit = async (settings: any) => {
@@ -24,7 +25,7 @@ const Upload = () => {
   useEffect(() => {
     const compressFileAsync = async () => {
       if (Object.keys(compressionSettings).length !== 0) {
-        console.log(compressionSettings);
+        setLoading(true)
         const data = {
           jobId: dataReturned.jobId,
           ...compressionSettings
@@ -32,9 +33,9 @@ const Upload = () => {
         try {
           const result = await compressFile(data) as any;
           if( result.downloadUrl !== null ) { 
-            setDownloadUrl(result.data.data.downloadUrl) 
+            setDownloadUrl(result.data.data.downloadUrl)
+            setLoading(false)
           }
-          // Handle result if needed
         } catch (error) {
           console.error('Error compressing file:', error);
         }
@@ -72,10 +73,14 @@ const Upload = () => {
           </Button>
         ) : (
           droppedFile ? (
-            <Stack width={'100%'} direction={'row'} justifyContent={'space-evenly'} alignItems={'center'}> 
-              <PDFViewer file={droppedFile} /> 
-              <CompressionSettings onSubmit={handleCompressionSettingsSubmit} />
-            </Stack>
+            loading ? (
+              <CircularProgress />
+            ) : (
+              <Stack width={'100%'} direction={'row'} justifyContent={'space-evenly'} alignItems={'center'}> 
+                <PDFViewer file={droppedFile} /> 
+                <CompressionSettings onSubmit={handleCompressionSettingsSubmit} />
+              </Stack>
+            )
           ) : (
             <UploadBox setDroppedFile={setDroppedFile} setDataReturned={setDataReturned} />
           )

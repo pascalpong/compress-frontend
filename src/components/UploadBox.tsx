@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */ 
-import { Box, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import { useFileUploadMutation } from '@/api/uploadService'; 
+import { useState } from 'react';
 
 interface UploadBoxProps {
   setDroppedFile: React.Dispatch<React.SetStateAction<File | null>>;
@@ -10,6 +11,7 @@ interface UploadBoxProps {
 const UploadBox: React.FC<UploadBoxProps> = ({ setDroppedFile, setDataReturned }) => {
 
   const [fileUpload] = useFileUploadMutation();
+  const [ loading, setLoading ] = useState(false)
 
   const manageFile = async (file: any) => {
 
@@ -35,6 +37,7 @@ const UploadBox: React.FC<UploadBoxProps> = ({ setDroppedFile, setDataReturned }
         const details = await fileUpload({data, file}) as any; 
         setDataReturned({data: details.data.data, jobId:details.data.jobId })
         setDroppedFile(file);
+        setLoading(false)
     } catch (error) {
         console.log(error)
     } 
@@ -44,6 +47,7 @@ const UploadBox: React.FC<UploadBoxProps> = ({ setDroppedFile, setDataReturned }
     event.preventDefault();
     const file = event.dataTransfer.files[0];
     manageFile(file);
+    setLoading(true)
   };
 
   const handleDragOver = (event: any) => {
@@ -53,29 +57,35 @@ const UploadBox: React.FC<UploadBoxProps> = ({ setDroppedFile, setDataReturned }
   const handleFileChange = (event: any) => {
       const file = event.target.files[0];
       manageFile(file);
+      setLoading(true)
   };
 
     return (
-        
-        <Box
-          onDrop={handleDrop}
-          onDragOver={handleDragOver}
-          sx={{ cursor: 'pointer' }}
-        >
-          <input
-            type="file"
-            accept="application/pdf"
-            onChange={handleFileChange}
-            style={{ display: "none" }}
-            id="fileInput"
-          />
-          <label htmlFor="fileInput">
-            <Typography variant="h5" color={'text.secondary'}>Drag and Drop PDF File Here</Typography>
-            <Typography variant="body1" color="text.secondary" mt={2}>
-                Or click to browse your files
-            </Typography>
-          </label>
-        </Box>
+        <>
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          <Box
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+            sx={{ cursor: 'pointer' }}
+          >
+            <input
+              type="file"
+              accept="application/pdf"
+              onChange={handleFileChange}
+              style={{ display: "none" }}
+              id="fileInput"
+            />
+            <label htmlFor="fileInput">
+              <Typography variant="h5" color={'text.secondary'}>Drag and Drop PDF File Here</Typography>
+              <Typography variant="body1" color="text.secondary" mt={2}>
+                  Or click to browse your files
+              </Typography>
+            </label>
+          </Box>
+        )}
+        </>
     )
 }
 
